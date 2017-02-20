@@ -29,6 +29,11 @@ var userSchema = mongoose.Schema({
         token: String,
         email: String,
         name: String
+    },
+    fitbit: {
+        id: String,
+        accessToken: String,
+        refreshToken: String
     }
 
 });

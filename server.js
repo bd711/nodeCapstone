@@ -14,14 +14,36 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
+var User = require('./app/models/user');
+
 var configDB = require('./config/database.js');
-var FitbitStrategy = require('./passport-fitbit-oauth2/lib').FitbitOAuth2Strategy;
+var FitbitStrategy = require('passport-fitbit-oauth2').FitbitOAuth2Strategy;
 
 
 // configuration ===============================================================
 mongoose.connect(configDB.url); // connect to our database
 
-require('./config/passport')(passport); // pass passport for configuration
+// require('./config/passport')(passport); // pass passport for configuration
+passport.use(new FitbitStrategy({
+    clientID:     "2283MC",
+    clientSecret: "ac659f5668ac31f50655feddf7cfd7fe",
+    scope: ['activity','heartrate','location','profile'],
+    callbackURL: "http://localhost:8080/auth/fitbit/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOrCreate({ 'fitbit.id': profile.id, 'fitbit.accessToken': accessToken, 'fitbit.refreshToken': refreshToken }, function (err, user) {
+      return done(err, user);
+    });
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(obj, done) {
+  done(null, obj);
+});
 
 app.use(express.static('public'));
 
@@ -44,24 +66,24 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 
 // index page 
 
-const dailylistrouter = require('./dailylistrouter');
+// const dailylistrouter = require('./dailylistrouter');
 
-app.use(morgan('common'));
+// app.use(morgan('common'));
 
-app.use('/dailylists', dailylistrouter);
+// app.use('/dailylists', dailylistrouter);
 
-app.listen(process.env.PORT || 8080, () => {
-    console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
-});
-
-
+// app.listen(process.env.PORT || 8080, () => {
+//     console.log(`Your app is listening on port ${process.env.PORT || 8080}`);
+// });
 
 
 
-// about page 
-app.get('/about', function(req, res) {
-    res.render('pages/about');
-});
+
+
+// // about page 
+// app.get('/about', function(req, res) {
+//     res.render('pages/about');
+// });
 
 app.listen(8080);
-console.log('8080 is the magic port');
+console.log('http://localhost:8080/');
