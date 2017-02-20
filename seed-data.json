@@ -1,0 +1,6 @@
+//seed-data.json
+
+{ "date": "01-02-2017", 
+	"symptom": {"fatigue": "0", "anxiety": "1", "apathy": "0", "moodswings": "1", "insomnia": "0", "agitation": "1", "irritability": "0", "concentration": "1", "hunger": "0", "appetite": "1"}, 
+"usersID": "Lorem ipsum dolor sit amet, consid est laborum."}
+

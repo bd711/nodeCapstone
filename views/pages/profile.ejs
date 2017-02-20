@@ -1,0 +1,53 @@
+
+<!-- views/index.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <h2>Welcome, <%=user.local.email%></h2>
+
+
+
+        <div class="symptomCheckList">
+            <h1>What symptoms have you noticed today?</h1>
+            <%include ../partials/checklist %>
+        </div>
+        
+        <div class="fitbitData"> 
+            <h1>Today's Fitbit Data</h1>
+         
+         <div class="viewData">
+           <!-- //won't need this button any more, right? <button type="button">View Past Data</button> --!>
+            <% for (var i = 0; i < past.length; i++) { %>
+                <p><%=past[i].calories%></p>
+
+                <% for (var i = 0; i < past.length; i++) { %>
+                <p><%=past[i].steps%></p>
+
+                <% for (var i = 0; i < past.length; i++) { %>
+                <p><%=past[i].distance%></p>
+        </div>
+        
+        <div class="pastDays"> 
+        </div>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+    
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>
+
